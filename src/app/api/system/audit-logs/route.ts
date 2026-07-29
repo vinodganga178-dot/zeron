@@ -13,6 +13,7 @@ export const GET = withAuth(['admin'], async (req) => {
   const before = searchParams.get('before'); // cursor: ISO timestamp
 
   const db = getAdminDb();
+  if (!db) return ok({ logs: [], cursor: null, hasMore: false, total: 0 });
 
   let query = db.collection('auditLogs').orderBy('timestamp', 'desc');
 
@@ -21,7 +22,7 @@ export const GET = withAuth(['admin'], async (req) => {
   }
 
   const snap = await query.limit(limit).get();
-  const logs = snap.docs.map(d => d.data() as AuditLog);
+  const logs = snap.docs.map((d: any) => d.data() as AuditLog);
 
   const cursor = logs.length > 0 ? logs[logs.length - 1].timestamp : null;
 

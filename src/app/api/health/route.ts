@@ -9,12 +9,14 @@ export async function GET() {
   if (isFirebaseActive && isAdminConfigured()) {
     try {
       const db = getAdminDb();
-      const start = Date.now();
-      // Perform a minimal, low-cost read to verify connection health
-      await db.collection('events').limit(1).get();
-      const latency = Date.now() - start;
-      dbHealth.status = 'connected';
-      dbHealth.latency = `${latency}ms`;
+      if (db) {
+        const start = Date.now();
+        // Perform a minimal, low-cost read to verify connection health
+        await db.collection('events').limit(1).get();
+        const latency = Date.now() - start;
+        dbHealth.status = 'connected';
+        dbHealth.latency = `${latency}ms`;
+      }
     } catch (error: any) {
       dbHealth.status = 'error';
       dbHealth.error = error.message || 'Firestore connection failed';

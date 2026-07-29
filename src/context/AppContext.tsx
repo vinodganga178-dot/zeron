@@ -21,6 +21,24 @@ function formatTimestamp(): string {
   return `[${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}]`;
 }
 
+async function apiFetch<T>(url: string, method = 'GET', body?: any): Promise<T> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('zerone_api_token') : null;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const res = await fetch(url, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.error || 'API Request failed');
+  }
+  return data.data !== undefined ? data.data : data;
+}
+
+
 // ── Context Type ──────────────────────────────────────────────────────────────
 interface AppContextType {
   currentUser: UserAuth | null;

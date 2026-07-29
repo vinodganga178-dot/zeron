@@ -12,6 +12,7 @@ export const GET = withPublic(async (req) => {
   const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 100);
 
   const db = getAdminDb();
+  if (!db) return ok({ notifications: [], total: 0 });
 
   // Fetch global + role + group + personal notifications
   const targets = ['global'];
@@ -25,7 +26,7 @@ export const GET = withPublic(async (req) => {
     .limit(limit)
     .get();
 
-  const notifications = snap.docs.map(d => d.data() as Notification);
+  const notifications = snap.docs.map((d: any) => d.data() as Notification);
   return ok({ notifications, total: notifications.length });
 });
 
@@ -41,7 +42,9 @@ export const POST = withAuth(['admin', 'volunteer'], async (req, session) => {
   if (!title?.trim() || !msgBody?.trim()) return fail('title and body are required.');
 
   const db = getAdminDb();
+  if (!db) return fail('Backend is disabled in local mode.');
   const now = new Date().toISOString();
+
   const id = `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
 
   const notification: Notification = {

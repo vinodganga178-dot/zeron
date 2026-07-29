@@ -8,6 +8,9 @@ import { withAuth } from '@/lib/with-auth';
  */
 export const GET = withAuth(['admin'], async () => {
   const db = getAdminDb();
+  if (!db) {
+    return NextResponse.json({ error: 'Backend is disabled in local mode' }, { status: 400 });
+  }
 
   const [
     studentsSnap,
@@ -33,13 +36,13 @@ export const GET = withAuth(['admin'], async () => {
     exportedAt: new Date().toISOString(),
     version: '1.0',
     platform: 'IEEE Zerone',
-    students: studentsSnap.docs.map(d => d.data()),
-    volunteers: volunteersSnap.docs.map(d => d.data()),
-    groups: groupsSnap.docs.map(d => d.data()),
-    events: eventsSnap.docs.map(d => d.data()),
-    scores: scoresSnap.docs.map(d => d.data()),
-    notifications: notificationsSnap.docs.map(d => d.data()),
-    auditLogs: logsSnap.docs.map(d => d.data()),
+    students: studentsSnap.docs.map((d: any) => d.data()),
+    volunteers: volunteersSnap.docs.map((d: any) => d.data()),
+    groups: groupsSnap.docs.map((d: any) => d.data()),
+    events: eventsSnap.docs.map((d: any) => d.data()),
+    scores: scoresSnap.docs.map((d: any) => d.data()),
+    notifications: notificationsSnap.docs.map((d: any) => d.data()),
+    auditLogs: logsSnap.docs.map((d: any) => d.data()),
     systemSettings: settingsDoc.exists ? settingsDoc.data() : {},
   };
 

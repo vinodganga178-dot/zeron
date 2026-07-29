@@ -3,11 +3,11 @@
  * Safely handles disconnected backend mode without throwing unhandled exceptions.
  */
 
-export function getAdminApp() {
+export function getAdminApp(): any {
   return null;
 }
 
-export function getAdminDb() {
+export function getAdminDb(): any {
   return null;
 }
 
@@ -15,3 +15,4 @@ export function getAdminDb() {
 export const isAdminConfigured = (): boolean => {
   return false;
 };
+
