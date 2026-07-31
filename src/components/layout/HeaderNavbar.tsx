@@ -153,7 +153,6 @@ export default function HeaderNavbar() {
           )}
         </div>
       )}
-      </div>
     </header>
   );
 }
