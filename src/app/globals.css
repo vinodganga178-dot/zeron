@@ -928,3 +928,27 @@ button, a, input, select, textarea {
     overflow-x: hidden;
   }
 }
+
+
+/* =====================================================
+   MOBILE-FIRST TOUCH TARGETS & RESPONSIVE FORM RULES
+   ===================================================== */
+
+button, a, input, select, textarea, [role="button"] {
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent auto-zoom on iOS Safari when focusing form inputs */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  .mobile-stack-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

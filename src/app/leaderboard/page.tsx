@@ -3,7 +3,8 @@
 import React from 'react';
 import HeaderNavbar from '@/components/layout/HeaderNavbar';
 import { useZerone } from '@/context/AppContext';
-import { Crown, TrendingUp } from 'lucide-react';
+import { Crown, TrendingUp, Trophy, Zap, RefreshCw } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function LeaderboardPage() {
   const { teams } = useZerone();
@@ -32,42 +33,43 @@ export default function LeaderboardPage() {
   const sortedTeams = teamList.length > 0 ? teamList.sort((a, b) => b.score - a.score) : defaultTeams;
 
   return (
-    <div className="relative min-h-screen bg-[#0E0F11] text-[#F4F4F0] selection:bg-[#F97316] selection:text-black pb-24">
-      {/* Blueprint Grid Overlay */}
-      <div className="fixed inset-0 blueprint-grid pointer-events-none z-0 opacity-30" />
+    <div className="relative min-h-screen bg-[#101010] text-[#f5f6f7] font-mono selection:bg-[#00d992] selection:text-black pb-28">
+      {/* Noise Overlay */}
+      <div className="noise" />
 
       {/* Header Navigation */}
       <HeaderNavbar />
 
-      <main className="relative z-10 pt-36 px-6 max-w-[1280px] mx-auto">
-        {/* Badge Header */}
-        <div className="badge-state-green mb-6">
-          <span className="green-dot" />
-          <span>CONTROL PLANE · SSE · 4 ARENAS → 1 SCREEN</span>
+      <main className="relative z-10 pt-28 sm:pt-36 px-4 sm:px-6 max-w-[1280px] mx-auto space-y-6">
+        {/* Header Title Section */}
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00d992]/10 border border-[#00d992]/30 text-[#00d992] text-[10px] font-bold uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#00d992] animate-pulse" />
+            <span>CONTROL PLANE · LIVE SYNC (LATENCY 4MS)</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight heading">
+            Live Standings.
+          </h1>
+          <p className="text-xs sm:text-sm text-[#8b949e] max-w-xl body-text">
+            Scores update automatically within milliseconds of volunteer scan verification.
+          </p>
         </div>
 
-        {/* Title & Subtitle */}
-        <h1 className="text-section-heading text-4xl sm:text-5xl text-[#F4F4F0] mb-4">
-          Live standings.
-        </h1>
-        <p className="text-body max-w-xl mb-12">
-          Scores settle within four milliseconds of a scan. Nothing here is manual.
-        </p>
-
-        {/* Indicator Ribbon */}
-        <div className="card-carbon-static !p-4 mb-8 flex items-center justify-between font-mono text-xs text-[#71717A]">
+        {/* Sync Status Banner */}
+        <div className="rounded-2xl border border-[#3d3a39] bg-[#1a1a1a] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="green-dot" />
-            <span className="text-[#3FBF74] font-bold">LIVE FEED ACTIVE</span>
+            <RefreshCw className="w-4 h-4 text-[#00d992] animate-spin" />
+            <span className="text-[#00d992] font-bold">AUTOMATED SCORE ENGINE ACTIVE</span>
           </div>
-          <div className="flex items-center gap-6">
-            <span>SYNC: SSE</span>
-            <span className="text-[#F4F4F0]">LATENCY 4 MS</span>
+          <div className="flex items-center justify-between sm:justify-end gap-4 text-[#8b949e] text-[11px]">
+            <span>SYNC: SSE PIPELINE</span>
+            <span className="text-white font-bold">LATENCY &lt; 4MS</span>
           </div>
         </div>
 
-        {/* Table List */}
-        <div className="space-y-4">
+        {/* Responsive Team Ranks (Single column on mobile, cards with rank highlights) */}
+        <div className="space-y-3">
           {sortedTeams.map((team, index) => {
             const rank = index + 1;
             const isFirst = rank === 1;
@@ -75,50 +77,65 @@ export default function LeaderboardPage() {
             const isThird = rank === 3;
 
             return (
-              <div
+              <motion.div
                 key={team.id}
-                className={`card-carbon p-6 flex items-center justify-between gap-4 transition-all ${
-                  isFirst ? 'border-[#3FBF74]/50 bg-[#1D2025]' : ''
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.04 }}
+                className={`rounded-2xl border p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${
+                  isFirst
+                    ? 'border-[#00d992]/60 bg-[#00d992]/10 shadow-[0_0_30px_rgba(0,217,146,0.15)]'
+                    : isSecond
+                    ? 'border-amber-500/40 bg-amber-500/5'
+                    : isThird
+                    ? 'border-[#7c3aed]/40 bg-[#7c3aed]/5'
+                    : 'border-[#3d3a39] bg-[#1a1a1a]'
                 }`}
               >
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3.5 sm:gap-5">
                   {/* Rank Badge */}
                   <div
-                    className={`w-10 h-10 rounded-[12px] font-mono font-bold text-sm flex items-center justify-center shrink-0 border ${
+                    className={`w-11 h-11 rounded-xl font-mono font-black text-sm flex items-center justify-center shrink-0 border ${
                       isFirst
-                        ? 'bg-[#3FBF74]/15 border-[#3FBF74] text-[#3FBF74]'
+                        ? 'bg-[#00d992] text-black border-[#00d992]'
                         : isSecond
-                        ? 'bg-[#1D2025] border-[#71717A] text-[#F4F4F0]'
+                        ? 'bg-amber-400 text-black border-amber-400'
                         : isThird
-                        ? 'bg-[#1D2025] border-[#2A2D33] text-[#71717A]'
-                        : 'bg-[#0E0F11] border-[#2A2D33] text-[#71717A]'
+                        ? 'bg-[#7c3aed] text-white border-[#7c3aed]'
+                        : 'bg-[#101010] text-[#8b949e] border-[#3d3a39]'
                     }`}
                   >
-                    {isFirst ? <Crown className="w-5 h-5" /> : rank}
+                    {isFirst ? <Crown className="w-5 h-5" /> : `#${rank}`}
                   </div>
 
                   {/* Team Details */}
-                  <div>
-                    <div className="text-card-heading flex items-center gap-2">
-                      {team.name}
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm sm:text-base font-bold text-white truncate flex items-center gap-2">
+                      <span>{team.name}</span>
+                      {isFirst && (
+                        <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-[#00d992]/20 text-[#00d992] border border-[#00d992]/40">
+                          LEADER
+                        </span>
+                      )}
                     </div>
-                    <div className="text-sys-mono text-[#71717A] mt-1">
-                      LEADING ARENA · <span className="text-[#F4F4F0]">{team.leadingArena}</span>
+                    <div className="text-[10px] sm:text-xs text-[#8b949e] font-mono mt-0.5 flex items-center gap-2">
+                      <span>ARENA: <strong className="text-white">{team.leadingArena}</strong></span>
                     </div>
                   </div>
                 </div>
 
-                {/* Score & Gains */}
-                <div className="flex items-center gap-6 sm:gap-10">
-                  <div className="hidden sm:flex items-center gap-1.5 text-[#3FBF74] font-mono text-xs bg-[#3FBF74]/10 px-3 py-1 rounded-[8px] border border-[#3FBF74]/20">
+                {/* Score & Gain Indicator */}
+                <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-t-0 border-[#3d3a39] pt-2 sm:pt-0">
+                  <div className="flex items-center gap-1.5 text-[#00d992] font-mono text-xs bg-[#00d992]/10 px-3 py-1 rounded-lg border border-[#00d992]/30">
                     <TrendingUp className="w-3.5 h-3.5" />
-                    +{team.recentPoints}
+                    <span>+{team.recentPoints} pts</span>
                   </div>
-                  <div className="font-mono text-3xl font-extrabold text-[#F4F4F0]">
+
+                  <div className="font-mono text-2xl sm:text-3xl font-black text-white tracking-tight">
                     {team.score}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
