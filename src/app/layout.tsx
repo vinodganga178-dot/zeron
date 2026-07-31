@@ -48,7 +48,7 @@ export default function RootLayout({
       className={`${sora.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} dark antialiased`}
       style={{ colorScheme: "dark" }}
     >
-      <body className="bg-[#0a0a0b] text-[#f2f2f2] min-h-screen">
+      <body className="bg-[#101010] text-[#f5f6f7] font-mono min-h-screen selection:bg-[#00d992] selection:text-black">
         <AppProvider>
           {children}
         </AppProvider>

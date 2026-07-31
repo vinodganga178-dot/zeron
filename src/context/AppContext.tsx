@@ -62,7 +62,7 @@ interface AppContextType {
   assignVolunteerTeam: (uid: string, teamId: string | null) => Promise<void>;
 
   // ── Team Management ───────────────────────────────────────────────────────
-  registerTeam: (teamName: string, members: Participant[]) => Promise<Team>;
+  registerTeam: (teamName: string, members: Participant[], groupName?: string) => Promise<Team>;
   updateTeamName: (teamId: string, name: string) => Promise<void>;
   deleteTeam: (teamId: string) => Promise<void>;
   updateTeamScore: (teamId: string, eventId: keyof EventScores, marks: number) => Promise<void>;
@@ -470,14 +470,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
   //  TEAM MANAGEMENT
   // ══════════════════════════════════════════════════════════════════════════════
 
-  const registerTeam = async (teamName: string, members: Participant[]): Promise<Team> => {
+  const registerTeam = async (teamName: string, members: Participant[], groupName?: string): Promise<Team> => {
     if (!teamName.trim()) throw new Error('Team name is required');
     if (members.length === 0) throw new Error('Scan at least one participant');
     if (!currentUser || currentUser.role !== 'volunteer') throw new Error('Only volunteers can register teams');
 
     if (isFirebaseActive) {
-      const result = await apiFetch<{ team: Team }>('/api/teams', 'POST', { teamName, members });
-      return result.team;
+      const result = await apiFetch<{ team: Team }>('/api/teams', 'POST', { teamName, members, groupName });
+      const team = result.team;
+      // Update currentUser with the new teamId so Team Details shows immediately
+      const updatedAuth = { ...currentUser, assignedTeamId: team.id };
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedAuth));
+      setCurrentUser(updatedAuth);
+      return team;
     }
 
     const snap = getState();
@@ -490,6 +495,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const newTeam: Team = {
       id: teamId,
       name: teamName.trim(),
+      groupName: groupName?.trim() || undefined,
       volunteerId: currentUser.uid,
       volunteerName: currentUser.name,
       members: assignedMembers,

@@ -42,28 +42,28 @@ export default function CollapsibleSidebar({
 
   const isPurple = themeColor === 'purple';
 
-  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00e5ff]';
-  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00e5ff]';
-  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00e5ff]/40';
+  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00d992]';
+  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00d992]';
+  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00d992]/40';
   const activeBtnBg = isPurple
     ? 'bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]'
-    : 'bg-[#00e5ff] text-black shadow-[0_0_20px_rgba(0,229,255,0.35)]';
+    : 'bg-[#00d992] text-[#101010] shadow-[0_0_20px_rgba(56,214,245,0.4)]';
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
     <aside
-      className={`sticky top-0 h-screen bg-[#0e0e12] border-r border-[#22222e] p-3.5 flex flex-col justify-between shrink-0 transition-all duration-300 select-none z-30 ${
+      className={`sticky top-0 h-screen bg-[#1a1a1a] border-r border-[#3d3a39] p-3.5 flex flex-col justify-between shrink-0 transition-all duration-300 select-none z-30 ${
         isCollapsed ? 'w-16 sm:w-20' : 'w-64 sm:w-72'
       }`}
     >
       <div className="space-y-6">
         {/* Top Header & Collapse Toggle */}
-        <div className="flex items-center justify-between pb-2 border-b border-[#22222e]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#3d3a39]">
           <div className="flex items-center gap-3 overflow-hidden">
             <div
               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accentBg} ${
-                isPurple ? 'text-white' : 'text-black'
+                isPurple ? 'text-white' : 'text-[#101010]'
               } font-black text-xs shadow-md`}
             >
               {isPurple ? <Shield className="h-5 w-5" /> : <Workflow className="h-5 w-5" />}
@@ -73,15 +73,15 @@ export default function CollapsibleSidebar({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="truncate font-mono"
+                className="truncate"
               >
-                <div className="text-xs font-black tracking-wider text-white flex items-center gap-1.5 truncate">
+                <div className="text-xs font-bold heading tracking-wider text-white flex items-center gap-1.5 truncate">
                   {title}{' '}
-                  <span className={`text-[8px] ${accentText} bg-white/5 px-1.5 py-0.5 rounded border ${accentBorder} font-bold`}>
+                  <span className={`text-[8px] ${accentText} bg-[#1a1a1a] px-1.5 py-0.5 rounded border ${accentBorder} font-bold font-mono`}>
                     {roleTag}
                   </span>
                 </div>
-                <div className="text-[10px] text-[#666]">Control Plane</div>
+                <div className="text-[10px] text-[#00d992] font-bold font-mono">IEEE KIDANGOOR</div>
               </motion.div>
             )}
           </div>
@@ -89,7 +89,7 @@ export default function CollapsibleSidebar({
           {/* Minimize / Expand Toggle Button */}
           <button
             onClick={toggleCollapse}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#181822] hover:bg-[#252535] border border-[#2d2d3d] text-[#aaa] hover:text-white transition-all shadow-sm"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#1a1a1a] hover:bg-[#3d3a39] border border-[#3d3a39] text-[#8b949e] hover:text-white transition-all shadow-sm"
             title={isCollapsed ? 'Expand Sidebar' : 'Minimize Sidebar'}
           >
             {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -97,7 +97,7 @@ export default function CollapsibleSidebar({
         </div>
 
         {/* Navigation Items */}
-        <nav className="space-y-1.5 font-mono text-xs">
+        <nav className="space-y-1.5 text-xs body-text">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;

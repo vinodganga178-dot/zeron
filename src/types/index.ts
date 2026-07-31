@@ -43,6 +43,7 @@ export interface EventScores {
 export interface Team {
   id: string;           // e.g. "ZR-7049"
   name: string;
+  groupName?: string;   // Optional group/batch label (e.g. "Alpha Squad", "Group A")
   volunteerId: string;
   volunteerName: string;
   members: Participant[];

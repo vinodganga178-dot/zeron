@@ -44,10 +44,10 @@ export default function HamburgerSidebar({
 
   const isPurple = themeColor === 'purple';
 
-  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00e5ff]';
-  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00e5ff]';
-  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00e5ff]/40';
-  const activeBtnBg = isPurple ? 'bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]' : 'bg-[#00e5ff] text-black shadow-[0_0_20px_rgba(0,229,255,0.35)]';
+  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00d992]';
+  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00d992]';
+  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00d992]/40';
+  const activeBtnBg = isPurple ? 'bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]' : 'bg-[#00d992] text-[#101010] shadow-[0_0_20px_rgba(56,214,245,0.4)]';
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -59,33 +59,33 @@ export default function HamburgerSidebar({
   return (
     <>
       {/* Sticky Top Bar with Hamburger Trigger */}
-      <header className="sticky top-0 z-40 w-full bg-[#0a0a0b]/90 backdrop-blur-xl border-b border-[#222] px-4 sm:px-6 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-40 w-full bg-[#1a1a1a]/90 backdrop-blur-xl border-b border-[#3d3a39] px-4 sm:px-6 py-3 flex items-center justify-between font-mono">
         <div className="flex items-center gap-3">
           {/* Hamburger Menu Toggle Button */}
           <button
             onClick={toggleSidebar}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#141419] hover:bg-[#1f1f28] border border-[#2d2d3d] text-white transition-all shadow-md active:scale-95"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a1a1a] hover:bg-[#3d3a39] border border-[#3d3a39] text-white transition-all shadow-md active:scale-95"
             aria-label="Toggle Navigation Menu"
           >
             <Menu className="h-5 w-5" />
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${accentBg} ${isPurple ? 'text-white' : 'text-black'} font-black text-xs shadow-md`}>
+            <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${accentBg} ${isPurple ? 'text-white' : 'text-[#101010]'} font-black text-xs shadow-md`}>
               {isPurple ? <Shield className="h-4 w-4" /> : <Workflow className="h-4 w-4" />}
             </div>
             <div>
               <div className="text-xs font-black tracking-wider font-mono text-white flex items-center gap-1.5">
-                {title} <span className={`text-[9px] ${accentText} bg-white/5 px-1.5 py-0.5 rounded border ${accentBorder} font-bold`}>{roleTag}</span>
+                {title} <span className={`text-[9px] ${accentText} bg-[#1a1a1a] px-1.5 py-0.5 rounded border ${accentBorder} font-bold`}>{roleTag}</span>
               </div>
-              <div className="text-[10px] text-[#666] font-mono">{subtitle}</div>
+              <div className="text-[10px] text-[#00d992] font-mono font-bold">CO-POWERED BY IEEE KIDANGOOR</div>
             </div>
           </div>
         </div>
 
         {/* Current Active Tab Label Indicator */}
-        <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-[#888]">
-          <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+        <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-[#8b949e]">
+          <span className="h-2 w-2 rounded-full bg-[#00d992] pulse-dot" />
           <span className="text-white font-bold uppercase">{activeTab}</span>
         </div>
       </header>
@@ -109,7 +109,7 @@ export default function HamburgerSidebar({
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-              className="fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-[#111116] border-r border-[#262633] p-6 flex flex-col justify-between shadow-2xl font-mono"
+              className="fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-[#1a1a1a] border-r border-[#3d3a39] p-6 flex flex-col justify-between shadow-2xl font-mono"
             >
               <div className="space-y-6">
                 {/* Drawer Header with Close Button */}

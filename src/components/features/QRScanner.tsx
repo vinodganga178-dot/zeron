@@ -218,43 +218,43 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
         <div className="text-[10px] font-bold text-[#888] uppercase tracking-wider">Manual Entry / Quick Testing</div>
         <form onSubmit={handleManualSubmit} className="space-y-3 text-xs">
           <div>
-            <label className="text-[10px] text-[#666] uppercase block mb-1">Participant Name *</label>
+            <label className="text-[10px] text-[#8b949e] uppercase block mb-1">Participant Name *</label>
             <input
               type="text"
               value={manualName}
               onChange={(e) => setManualName(e.target.value)}
               required
               placeholder="e.g. Arun Kumar"
-              className="w-full bg-[#0a0a0b] border border-[#2a2a2a] rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:border-[#00e5ff] outline-none"
+              className="w-full bg-[#1a1a1a] border border-[#3d3a39] rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:border-[#00d992] outline-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-[10px] text-[#666] uppercase block mb-1">QR ID Code (Optional)</label>
+              <label className="text-[10px] text-[#8b949e] uppercase block mb-1">QR ID Code (Optional)</label>
               <input
                 type="text"
                 value={manualInput}
                 onChange={(e) => setManualInput(e.target.value)}
                 placeholder="Auto-generated if empty"
-                className="w-full bg-[#0a0a0b] border border-[#2a2a2a] rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:border-[#00e5ff] outline-none"
+                className="w-full bg-[#1a1a1a] border border-[#3d3a39] rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:border-[#00d992] outline-none"
               />
             </div>
             <div>
-              <label className="text-[10px] text-[#666] uppercase block mb-1">Department</label>
+              <label className="text-[10px] text-[#8b949e] uppercase block mb-1">Department</label>
               <input
                 type="text"
                 value={manualDept}
                 onChange={(e) => setManualDept(e.target.value)}
                 placeholder="e.g. CSE"
-                className="w-full bg-[#0a0a0b] border border-[#2a2a2a] rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:border-[#00e5ff] outline-none"
+                className="w-full bg-[#1a1a1a] border border-[#3d3a39] rounded-xl px-3.5 py-2.5 text-white placeholder-gray-500 focus:border-[#00d992] outline-none"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#1a1a1a] hover:bg-[#222] border border-[#333] text-white font-bold py-2 rounded-lg text-xs transition-all"
+            className="w-full bg-[#1a1a1a] hover:bg-[#3d3a39] border border-[#3d3a39] text-[#00d992] hover:text-white font-bold py-2.5 rounded-xl text-xs transition-all"
           >
             + Add Participant to Queue
           </button>
@@ -262,7 +262,7 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
 
         {/* Quick Demo Test Buttons */}
         <div className="pt-2">
-          <div className="text-[10px] text-[#555] uppercase mb-1.5">Quick Demo Scan Simulators:</div>
+          <div className="text-[10px] text-[#8b949e] uppercase mb-1.5 font-bold">Quick Demo Scan Simulators:</div>
           <div className="flex flex-wrap gap-1.5 text-[10px]">
             {[
               { name: 'Rahul Sharma', dept: 'CSE' },
@@ -274,7 +274,7 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
                 key={demo.name}
                 type="button"
                 onClick={() => triggerPresetScan(demo.name, demo.dept)}
-                className="bg-[#0a0a0b] hover:bg-[#1a1a24] border border-[#2a2a2a] hover:border-[#00e5ff]/50 text-[#aaa] hover:text-white px-2.5 py-1 rounded-md transition-all"
+                className="bg-[#1a1a1a] hover:bg-[#3d3a39] border border-[#3d3a39] hover:border-[#00d992]/50 text-[#8b949e] hover:text-white px-2.5 py-1 rounded-lg transition-all"
               >
                 + Scan {demo.name}
               </button>
