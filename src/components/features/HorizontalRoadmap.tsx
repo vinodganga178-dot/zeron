@@ -16,13 +16,13 @@ interface HorizontalRoadmapProps {
 const STAGE_CFG = [
   { icon: HelpCircle,  color: '#a78bfa', glow: 'rgba(168,85,247,0.4)' },
   { icon: Lightbulb,   color: '#fbbf24', glow: 'rgba(251,191,36,0.4)' },
-  { icon: TrendingUp,  color: '#00d992', glow: 'rgba(56,214,245,0.4)' },
+  { icon: TrendingUp,  color: '#00d992', glow: 'rgba(0,217,146,0.4)' },
   { icon: Compass,     color: '#34d399', glow: 'rgba(52,211,153,0.4)' },
 ];
 
 function getStatusMeta(status: EventControl['status']) {
   switch (status) {
-    case 'Active':     return { label: 'LIVE NOW',    color: '#00d992', bg: 'rgba(56,214,245,0.15)',  border: 'rgba(56,214,245,0.5)',  pulse: true  };
+    case 'Active':     return { label: 'LIVE NOW',    color: '#00d992', bg: 'rgba(0,217,146,0.15)',  border: 'rgba(0,217,146,0.5)',  pulse: true  };
     case 'Completed':  return { label: 'COMPLETED',   color: '#34d399', bg: 'rgba(52,211,153,0.12)',  border: 'rgba(52,211,153,0.5)',  pulse: false };
     case 'Locked':     return { label: 'LOCKED',      color: '#ef4444', bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.5)',   pulse: false };
     default:           return { label: 'COMING SOON', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.5)',  pulse: false };

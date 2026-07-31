@@ -11,6 +11,28 @@ interface QRScannerProps {
   className?: string;
 }
 
+
+function playScanBeep() {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  } catch {
+    // Ignore audio restrictions
+  }
+}
+
 export default function QRScanner({ onScanSuccess, className = '' }: QRScannerProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -80,6 +102,7 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
             try {
               const parsed = parseQRCode(code.data);
               setLastScannedResult(parsed);
+              playScanBeep();
               onScanSuccess(parsed);
               
               // Haptic feedback if supported
@@ -126,6 +149,7 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
     };
 
     setLastScannedResult(simulated);
+    playScanBeep();
     onScanSuccess(simulated);
     setManualInput('');
     setManualName('');
@@ -140,6 +164,7 @@ export default function QRScanner({ onScanSuccess, className = '' }: QRScannerPr
       department: dept,
     };
     setLastScannedResult(preset);
+    playScanBeep();
     onScanSuccess(preset);
   };
 
