@@ -127,7 +127,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#101010] text-[#f5f6f7] flex flex-row overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#101010] text-[#f5f6f7] flex flex-col md:flex-row overflow-x-hidden">
       <div className="noise" />
       <div className="mesh-blob w-[550px] h-[550px] bg-[#7c3aed]/20 top-[-10%] left-[-5%]" />
       <div className="mesh-blob w-[650px] h-[650px] bg-[#3d3a39]/20 top-[35%] right-[-10%]" />
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
 
       <main className="flex-1 p-4 sm:p-6 md:p-8 pb-24 sm:pb-8 max-w-7xl mx-auto w-full overflow-y-auto">
 
-        {/* ── OVERVIEW ─────────────────────────────────────── */}
+        {/* â”€â”€ OVERVIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeTab === 'overview' && (
           <motion.div className="space-y-7" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
               <div>
                 <div className="text-[10px] font-mono text-[#7c3aed] uppercase tracking-widest mb-1">Admin Console</div>
                 <h1 className="text-2xl text-white heading">ZERONE 7.0 Command Centre</h1>
-                <p className="text-[13px] text-[#8b949e] mt-1 body-text">IEEE Kidangoor · Full Access Control Panel</p>
+                <p className="text-[13px] text-[#8b949e] mt-1 body-text">IEEE Kidangoor Â· Full Access Control Panel</p>
               </div>
               <div className="flex items-center gap-2 text-[11px] font-mono bg-[#1a1a1a] border border-[#7c3aed]/35 rounded-xl px-3 py-2">
                 <span className="h-2 w-2 rounded-full bg-[#7c3aed] animate-pulse" />
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
           </motion.div>
         )}
 
-        {/* ── VOLUNTEERS ───────────────────────────────────── */}
+        {/* â”€â”€ VOLUNTEERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeTab === 'volunteers' && (
           <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div>
@@ -281,7 +281,7 @@ export default function AdminDashboard() {
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-semibold text-white heading truncate">{vol.name}</div>
                           <div className="text-[11px] text-[#00d992] font-mono mt-0.5">{vol.email}</div>
-                          <div className="text-[11px] text-[#8b949e] mt-0.5 body-text">{vol.department} · {vol.phone}</div>
+                          <div className="text-[11px] text-[#8b949e] mt-0.5 body-text">{vol.department} Â· {vol.phone}</div>
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
                           <td className="px-4 py-3 hidden md:table-cell text-[#8b949e] text-[12px] body-text">{vol.department}</td>
                           <td className="px-4 py-3 hidden md:table-cell text-[#8b949e] text-[12px] font-mono">{vol.phone}</td>
                           <td className="px-4 py-3 text-[#00d992] font-mono text-[12px]">{vol.joinCode}</td>
-                          <td className="px-4 py-3 hidden sm:table-cell text-[12px] body-text">{vol.assignedTeamId ? <span className="text-[#00d992] font-mono">{vol.assignedTeamId}</span> : <span className="text-[#3d3a39]">—</span>}</td>
+                          <td className="px-4 py-3 hidden sm:table-cell text-[12px] body-text">{vol.assignedTeamId ? <span className="text-[#00d992] font-mono">{vol.assignedTeamId}</span> : <span className="text-[#3d3a39]">â€”</span>}</td>
                           <td className="px-4 py-3 text-right">
                             <button onClick={() => deleteVolunteer(vol.uid)} className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-500/10 transition-colors" title="Remove">
                               <Trash2 className="h-4 w-4" />
@@ -347,7 +347,7 @@ export default function AdminDashboard() {
           </motion.div>
         )}
 
-        {/* ── TEAMS ────────────────────────────────────────── */}
+        {/* â”€â”€ TEAMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeTab === 'teams' && (
           <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -408,7 +408,7 @@ export default function AdminDashboard() {
           </motion.div>
         )}
 
-        {/* ── EVENT CONTROLS ──────────────────────────────── */}
+        {/* â”€â”€ EVENT CONTROLS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeTab === 'events' && (
           <motion.div className="space-y-7" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div>

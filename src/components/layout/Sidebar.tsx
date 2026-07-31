@@ -1,11 +1,3 @@
 'use client';
-import React from 'react';
 
-interface SidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-}
-
-export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
-  return null;
-}
+export { default, type NavMenuItem, type CollapsibleSidebarProps as SidebarProps } from './CollapsibleSidebar';

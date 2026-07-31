@@ -123,7 +123,7 @@ export default function VolunteerDashboard() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#101010] text-[#f5f6f7] flex flex-row overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#101010] text-[#f5f6f7] flex flex-col md:flex-row overflow-x-hidden">
       <div className="noise" />
       <div className="mesh-blob w-[550px] h-[550px] bg-[#00d992]/12 top-[-10%] left-[-5%]" />
       <div className="mesh-blob w-[600px] h-[600px] bg-[#3d3a39]/18 top-[40%] right-[-10%]" />
@@ -131,14 +131,14 @@ export default function VolunteerDashboard() {
 
       <main className="flex-1 p-4 sm:p-6 md:p-8 pb-24 sm:pb-8 max-w-7xl mx-auto w-full overflow-y-auto">
 
-        {/* ── DASHBOARD ─────────────────────────────────── */}
+        {/* â”€â”€ DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeSection === 'dashboard' && (
           <motion.div className="space-y-7" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div>
                 <div className="text-[10px] font-mono text-[#00d992] uppercase tracking-widest mb-1">Volunteer Portal</div>
                 <h1 className="text-2xl text-white heading">{volData.name}</h1>
-                <p className="text-[13px] text-[#8b949e] mt-1 body-text">IEEE Zerone 7.0 · Volunteer Coordinator</p>
+                <p className="text-[13px] text-[#8b949e] mt-1 body-text">IEEE Zerone 7.0 Â· Volunteer Coordinator</p>
               </div>
               <div className="flex items-center gap-2 text-[11px] font-mono bg-[#1a1a1a] border border-[#3d3a39] rounded-xl px-3 py-2">
                 <span className="h-2 w-2 rounded-full bg-[#00d992] animate-pulse" />
@@ -187,7 +187,7 @@ export default function VolunteerDashboard() {
               {/* Rank */}
               <div className="rounded-2xl border border-[#3d3a39] bg-[#1a1a1a] p-5 space-y-3 premium-card">
                 <div className="text-[10px] font-mono text-[#8b949e] uppercase tracking-wider">Team Rank</div>
-                <AnimatedStat value={myTeamRank !== 'N/A' ? `#${myTeamRank}` : '—'} color="text-[#00d992]" />
+                <AnimatedStat value={myTeamRank !== 'N/A' ? `#${myTeamRank}` : 'â€”'} color="text-[#00d992]" />
                 <div className="text-[11px] text-[#8b949e] body-text">Score: {assignedTeam ? `${assignedTeam.totalScore} pts` : 'N/A'}</div>
                 <button onClick={() => setActiveSection('leaderboard')} className="w-full flex items-center justify-center gap-2 bg-[#1a1a1a] hover:bg-[#3d3a39] border border-[#3d3a39] text-white font-semibold py-2.5 rounded-xl text-xs transition-all body-text">
                   View Leaderboard <ArrowRight className="h-3.5 w-3.5" />
@@ -199,7 +199,7 @@ export default function VolunteerDashboard() {
           </motion.div>
         )}
 
-        {/* ── QR SCANNER & DIRECT REGISTRATION ───────────── */}
+        {/* â”€â”€ QR SCANNER & DIRECT REGISTRATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeSection === 'qr_scanner' && (
           <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div>
@@ -286,7 +286,7 @@ export default function VolunteerDashboard() {
           </motion.div>
         )}
 
-        {/* ── TEAM DETAILS ───────────────────────────────── */}
+        {/* â”€â”€ TEAM DETAILS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeSection === 'team_details' && (
           <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div>
@@ -404,7 +404,7 @@ export default function VolunteerDashboard() {
           </motion.div>
         )}
 
-        {/* ── LEADERBOARD ───────────────────────────────── */}
+        {/* â”€â”€ LEADERBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeSection === 'leaderboard' && (
           <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -460,7 +460,7 @@ export default function VolunteerDashboard() {
           </motion.div>
         )}
 
-        {/* ── PROFILE ───────────────────────────────────── */}
+        {/* â”€â”€ PROFILE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {activeSection === 'profile' && (
           <motion.div className="space-y-6 max-w-lg mx-auto" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
             <div>
