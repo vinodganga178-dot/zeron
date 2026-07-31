@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Token bucket rate limiting configuration
 interface Bucket {
   tokens: number;
   lastRefill: number;
 }
 
-// In-memory store for client IP buckets
 const ipBuckets = new Map<string, Bucket>();
 
 // Memory leak protection: clean up buckets older than 10 minutes
@@ -32,10 +30,17 @@ export function middleware(req: NextRequest) {
   const forwardedFor = req.headers.get('x-forwarded-for');
   const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
 
-  // Determine rate limit bucket size and refill rate based on route sensitivity
-  const isSensitive = path.includes('/api/auth/') || path.includes('/api/events/score') || path.includes('/api/valuation/');
-  const maxTokens = isSensitive ? 10 : 60; // Max requests allowed in the bucket
-  const refillInterval = 60 * 1000; // Refill window (1 minute)
+  // Determine rate limit tier based on route sensitivity
+  let maxTokens = 60; // Default read limit: 60 req/min
+  let refillIntervalMs = 60 * 1000;
+
+  if (path.includes('/api/auth/')) {
+    maxTokens = 10; // Strict limit on Auth endpoints
+  } else if (path.includes('/score') || path.includes('/admin/') || path.includes('/system/')) {
+    maxTokens = 30; // Sensitive write operations
+  } else if (path.includes('/leaderboard') || path.includes('/events')) {
+    maxTokens = 120; // High-throughput public reads
+  }
 
   const now = Date.now();
   let bucket = ipBuckets.get(ip);
@@ -47,16 +52,15 @@ export function middleware(req: NextRequest) {
 
   // Calculate elapsed time and add tokens proportionally
   const elapsed = now - bucket.lastRefill;
-  const tokensToAdd = Math.floor((elapsed / refillInterval) * maxTokens);
-  
+  const tokensToAdd = Math.floor((elapsed / refillIntervalMs) * maxTokens);
+
   if (tokensToAdd > 0) {
     bucket.tokens = Math.min(maxTokens, bucket.tokens + tokensToAdd);
     bucket.lastRefill = now;
   }
 
-  // Capping the in-memory map size to prevent heap exhaustion
+  // Cap memory size to prevent heap exhaustion
   if (ipBuckets.size > 10000) {
-    // Evict a random entry if map grows too large
     const firstKey = ipBuckets.keys().next().value;
     if (firstKey) ipBuckets.delete(firstKey);
   }
@@ -65,13 +69,15 @@ export function middleware(req: NextRequest) {
     return new NextResponse(
       JSON.stringify({
         success: false,
-        error: 'Too many requests. Please slow down and try again later.',
+        error: 'Rate limit exceeded. Please slow down and try again shortly.',
       }),
       {
         status: 429,
         headers: {
           'Content-Type': 'application/json',
           'Retry-After': '60',
+          'X-RateLimit-Limit': maxTokens.toString(),
+          'X-RateLimit-Remaining': '0',
         },
       }
     );
@@ -79,7 +85,12 @@ export function middleware(req: NextRequest) {
 
   // Consume 1 token
   bucket.tokens -= 1;
-  return NextResponse.next();
+
+  const response = NextResponse.next();
+  response.headers.set('X-RateLimit-Limit', maxTokens.toString());
+  response.headers.set('X-RateLimit-Remaining', bucket.tokens.toString());
+
+  return response;
 }
 
 export const config = {

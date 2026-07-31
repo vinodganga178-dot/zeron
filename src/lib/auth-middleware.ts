@@ -6,19 +6,21 @@
 import jwt from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
 import { SessionPayload } from '@/types/api';
+import { getEnvConfig } from './env';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'zerone-dev-secret-change-in-production-min-32-chars';
 const TOKEN_EXPIRY = '12h';
 
 /** Sign a new JWT for a session */
 export function signToken(payload: Omit<SessionPayload, 'iat' | 'exp'>): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+  const { jwtSecret } = getEnvConfig();
+  return jwt.sign(payload, jwtSecret, { expiresIn: TOKEN_EXPIRY });
 }
 
 /** Verify and decode a JWT. Throws on invalid/expired token. */
 export function verifyToken(token: string): SessionPayload {
+  const { jwtSecret } = getEnvConfig();
   try {
-    return jwt.verify(token, JWT_SECRET) as SessionPayload;
+    return jwt.verify(token, jwtSecret) as SessionPayload;
   } catch {
     throw new Error('Invalid or expired session token.');
   }
@@ -52,7 +54,7 @@ export function getSession(req: NextRequest): SessionPayload | null {
 
 /** Build Set-Cookie header string for session cookie */
 export function buildSessionCookie(token: string): string {
-  const isProduction = process.env.NODE_ENV === 'production';
+  const { isProduction } = getEnvConfig();
   return [
     `zerone_session=${token}`,
     'Path=/',
@@ -60,7 +62,9 @@ export function buildSessionCookie(token: string): string {
     'SameSite=Strict',
     `Max-Age=${12 * 60 * 60}`, // 12 hours
     isProduction ? 'Secure' : '',
-  ].filter(Boolean).join('; ');
+  ]
+    .filter(Boolean)
+    .join('; ');
 }
 
 /** Build cookie header to clear session */

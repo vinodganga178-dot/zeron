@@ -1,4 +1,4 @@
-import { Volunteer, Team, EventControl, Notification, AuditLog, UserAuth, UserRole, Participant } from '@/types';
+import { Volunteer, Team, EventControl, EventScores, Notification, AuditLog, UserAuth, UserRole, Participant } from '@/types';
 
 export interface SystemSettings {
   maxParticipantsPerTeam: number;
@@ -24,4 +24,4 @@ export interface ApiResponse<T = unknown> {
   message?: string;
 }
 
-export type { Volunteer, Team, EventControl, Notification, AuditLog, UserAuth, UserRole, Participant };
+export type { Volunteer, Team, EventControl, EventScores, Notification, AuditLog, UserAuth, UserRole, Participant };

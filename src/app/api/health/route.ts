@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getAdminDb, isAdminConfigured } from '@/lib/firebase-admin';
 import { isFirebaseActive } from '@/lib/firebase';
+import { productionCache } from '@/lib/cache';
+import { getEnvConfig } from '@/lib/env';
 
 export async function GET() {
   const timestamp = new Date().toISOString();
@@ -11,7 +13,6 @@ export async function GET() {
       const db = getAdminDb();
       if (db) {
         const start = Date.now();
-        // Perform a minimal, low-cost read to verify connection health
         await db.collection('events').limit(1).get();
         const latency = Date.now() - start;
         dbHealth.status = 'connected';
@@ -22,12 +23,11 @@ export async function GET() {
       dbHealth.error = error.message || 'Firestore connection failed';
     }
   } else {
-    // Local Sandbox Mode
+    // Local / High-Performance Standalone Memory Store Mode
     dbHealth.status = 'connected';
-    dbHealth.latency = 'sandbox_local';
+    dbHealth.latency = '0ms (standalone_in_memory)';
   }
 
-  // Get system memory statistics
   const memoryUsage = process.memoryUsage();
   const memoryStats = {
     rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`,
@@ -35,6 +35,8 @@ export async function GET() {
     heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
   };
 
+  const cacheStats = productionCache.getStats();
+  const envConfig = getEnvConfig();
   const isHealthy = dbHealth.status !== 'error';
 
   return NextResponse.json(
@@ -44,7 +46,8 @@ export async function GET() {
       timestamp,
       services: {
         database: dbHealth,
-        environment: process.env.NODE_ENV || 'production',
+        cache: cacheStats,
+        environment: envConfig.nodeEnv,
       },
       system: {
         memory: memoryStats,
@@ -59,4 +62,5 @@ export async function GET() {
     }
   );
 }
+
 export const dynamic = 'force-dynamic';

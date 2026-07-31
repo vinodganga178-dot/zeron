@@ -1,87 +1,88 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { dbStore } from '@/lib/db-service';
+import { validateScorePayload } from '@/lib/validation';
 import { isFirebaseActive, db } from '@/lib/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, runTransaction } from 'firebase/firestore';
 import { Team, EventScores } from '@/types';
 import { calculateTotalScore } from '@/lib/leaderboard';
+import { productionCache } from '@/lib/cache';
+import { recordAuditLog } from '@/lib/audit-logger';
 
-/**
- * PUBLIC SCORE API ENDPOINT
- * 
- * Every independent event website (Quiz, Pitch, Sell, Treasure Hunt) submits
- * scores to this endpoint upon completing an event for a team.
- * 
- * Request body:
- * {
- *   "eventId": "quiz" | "pitch" | "sell" | "treasureHunt",
- *   "marks": 85,
- *   "apiKey": "optional_event_api_key"
- * }
- */
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: teamId } = await params;
-    const { eventId, marks } = await req.json();
+    const body = await req.json();
 
-    if (!teamId || !eventId || marks === undefined) {
-      return NextResponse.json({
-        success: false,
-        error: 'Missing required parameters: teamId, eventId, and marks are required.',
-      }, { status: 400 });
+    // 1. Validation
+    const validation = validateScorePayload(body);
+    if (!validation.valid || !validation.data) {
+      return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
     }
 
-    const validEvents: Array<keyof EventScores> = ['quiz', 'pitch', 'sell', 'treasureHunt'];
-    if (!validEvents.includes(eventId as keyof EventScores)) {
-      return NextResponse.json({
-        success: false,
-        error: `Invalid eventId. Must be one of: ${validEvents.join(', ')}`,
-      }, { status: 400 });
-    }
+    const { eventId, marks } = validation.data;
 
-    const numMarks = Number(marks);
-    if (isNaN(numMarks)) {
-      return NextResponse.json({ success: false, error: 'Marks must be a valid number.' }, { status: 400 });
-    }
-
+    // 2. Firebase Cloud Database Path with Atomic Transaction
     if (isFirebaseActive && db) {
       const teamRef = doc(db, 'teams', teamId);
-      const teamSnap = await getDoc(teamRef);
+      
+      const transactionResult = await runTransaction(db, async (transaction) => {
+        const teamSnap = await transaction.get(teamRef);
+        if (!teamSnap.exists()) {
+          throw new Error(`Team ${teamId} not found.`);
+        }
 
-      if (!teamSnap.exists()) {
-        return NextResponse.json({ success: false, error: `Team ${teamId} not found.` }, { status: 404 });
-      }
+        const teamData = teamSnap.data() as Team;
+        const updatedScores: EventScores = {
+          ...teamData.scores,
+          [eventId]: marks,
+        };
 
-      const teamData = teamSnap.data() as Team;
-      const updatedScores: EventScores = {
-        ...teamData.scores,
-        [eventId]: numMarks,
-      };
+        const newTotal = calculateTotalScore(updatedScores);
 
-      const newTotal = calculateTotalScore(updatedScores);
+        transaction.update(teamRef, {
+          scores: updatedScores,
+          totalScore: newTotal,
+          currentEvent: eventId,
+        });
 
-      await updateDoc(teamRef, {
-        scores: updatedScores,
-        totalScore: newTotal,
-        currentEvent: eventId,
+        return { teamId, eventId, marksSubmitted: marks, newTotalScore: newTotal };
+      });
+
+      productionCache.invalidate('leaderboard');
+      await recordAuditLog({
+        type: 'score',
+        message: `Score updated for Team ${teamId} in ${eventId}: ${marks} pts.`,
       });
 
       return NextResponse.json({
         success: true,
         data: {
-          teamId,
-          eventId,
-          marksSubmitted: numMarks,
-          newTotalScore: newTotal,
+          ...transactionResult,
           timestamp: new Date().toISOString(),
         },
       });
     }
 
+    // 3. Standalone / Memory Database Path with Atomic Transaction & Optimistic Locking
+    const expectedVersion = body.version ? Number(body.version) : undefined;
+    const result = await dbStore.updateTeamScoreTransaction(teamId, eventId, marks, expectedVersion);
+
     return NextResponse.json({
       success: true,
-      message: 'Sandbox mode endpoint active. Please trigger update via AppContext or Firebase.',
-      data: { teamId, eventId, marksSubmitted: numMarks },
+      data: {
+        teamId,
+        eventId,
+        marksSubmitted: marks,
+        newTotalScore: result.newTotal,
+        version: result.version,
+        timestamp: new Date().toISOString(),
+      },
     });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message || 'Score update failed' }, { status: 500 });
+    const isConflict = error.message?.includes('Concurrency conflict');
+    return NextResponse.json(
+      { success: false, error: error.message || 'Score update failed' },
+      { status: isConflict ? 409 : 500 }
+    );
   }
 }
