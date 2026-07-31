@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useZerone } from '@/context/AppContext';
-import { Shield, Workflow, ArrowRight } from 'lucide-react';
+import { Shield, Workflow, ArrowRight, Menu, X } from 'lucide-react';
 
 export default function HeaderNavbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { currentUser } = useZerone();
   const [timeStr, setTimeStr] = useState<string>('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -69,7 +70,7 @@ export default function HeaderNavbar() {
         </nav>
 
         {/* Live Clock & Action Button */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {timeStr && (
             <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono text-[#8b949e] bg-[#1a1a1a] border border-[#3d3a39] px-3 py-1.5 rounded-xl">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00d992] blink" />
@@ -80,12 +81,12 @@ export default function HeaderNavbar() {
           {dashboardUrl ? (
             <button
               onClick={() => router.push(dashboardUrl)}
-              className="px-4 py-2 rounded-xl text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_20px_rgba(56,214,245,0.4)]"
+              className="px-3.5 sm:px-4 py-2 rounded-xl text-[10px] sm:text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_20px_rgba(0,217,146,0.3)]"
             >
               Control Panel
             </button>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2">
               <Link
                 href="/auth?mode=signin"
                 className="text-[12px] font-mono font-semibold text-[#8b949e] hover:text-white transition-colors px-3 py-1.5 rounded-xl hover:bg-[#1a1a1a]"
@@ -94,14 +95,64 @@ export default function HeaderNavbar() {
               </Link>
               <Link
                 href="/auth?mode=register"
-                className="px-4 py-2 rounded-xl text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_25px_rgba(56,214,245,0.45)] hover:scale-[1.02] flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_25px_rgba(0,217,146,0.35)] hover:scale-[1.02] flex items-center gap-1.5"
               >
                 <span>Register</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           )}
+
+          {/* Mobile Menu Hamburger Toggle Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl bg-[#1a1a1a] border border-[#3d3a39] text-[#8b949e] hover:text-white transition-all"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
+      </div>
+
+      {/* Mobile Drawer Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden mt-2 pointer-events-auto bg-[#1a1a1a]/95 backdrop-blur-2xl border border-[#3d3a39] rounded-2xl p-4 space-y-3 font-mono text-xs shadow-2xl animate-in slide-in-from-top-2">
+          <Link
+            href="/volunteer/login"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-[#101010] border border-[#3d3a39] text-white font-bold"
+          >
+            <span>01 · Volunteer Portal</span>
+            <ArrowRight className="h-4 w-4 text-[#00d992]" />
+          </Link>
+          <Link
+            href="/admin/login"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-between p-3 rounded-xl bg-[#101010] border border-[#3d3a39] text-white font-bold"
+          >
+            <span>02 · Admin Console</span>
+            <ArrowRight className="h-4 w-4 text-[#7c3aed]" />
+          </Link>
+          {!dashboardUrl && (
+            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#3d3a39]">
+              <Link
+                href="/auth?mode=signin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-center py-2.5 rounded-xl border border-[#3d3a39] text-white font-bold"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth?mode=register"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-center py-2.5 rounded-xl bg-[#00d992] text-black font-bold"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
       </div>
     </header>
   );

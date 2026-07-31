@@ -129,7 +129,7 @@ export default function VolunteerDashboard() {
       <div className="mesh-blob w-[600px] h-[600px] bg-[#3d3a39]/18 top-[40%] right-[-10%]" />
       <CollapsibleSidebar title="ZERONE 7.0" roleTag="VOLUNTEER" themeColor="cyan" menuItems={navItems} activeTab={activeSection} onSelectTab={(id) => setActiveSection(id)} userName={volData.name} userEmail={volData.email} onLogout={logout} />
 
-      <main className="flex-1 p-5 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-6 md:p-8 pb-24 sm:pb-8 max-w-7xl mx-auto w-full overflow-y-auto">
 
         {/* ── DASHBOARD ─────────────────────────────────── */}
         {activeSection === 'dashboard' && (

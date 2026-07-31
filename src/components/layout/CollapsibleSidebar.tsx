@@ -53,7 +53,7 @@ export default function CollapsibleSidebar({
 
   return (
     <aside
-      className={`sticky top-0 h-screen bg-[#1a1a1a] border-r border-[#3d3a39] p-3.5 flex flex-col justify-between shrink-0 transition-all duration-300 select-none z-30 ${
+      className={`hidden sm:flex sticky top-0 h-screen bg-[#1a1a1a] border-r border-[#3d3a39] p-3.5 flex-col justify-between shrink-0 transition-all duration-300 select-none z-30 ${
         isCollapsed ? 'w-16 sm:w-20' : 'w-64 sm:w-72'
       }`}
     >
@@ -166,6 +166,34 @@ export default function CollapsibleSidebar({
           {!isCollapsed && <span>Logout</span>}
         </button>
       </div>
+    
+      {/* ── Mobile Bottom Navigation Bar (App-like feel) ── */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#1a1a1a]/95 backdrop-blur-xl border-t border-[#3d3a39] px-2 py-1.5 flex items-center justify-around sm:hidden shadow-[0_-8px_30px_rgba(0,0,0,0.8)]">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onSelectTab(item.id)}
+              className={`flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-xl transition-all min-w-[56px] ${
+                isActive ? (isPurple ? 'text-[#a78bfa] font-bold bg-[#7c3aed]/15' : 'text-[#00d992] font-bold bg-[#00d992]/15') : 'text-[#8b949e]'
+              }`}
+            >
+              <div className="relative">
+                <Icon className="h-5 w-5" />
+                {item.badge && (
+                  <span className="absolute -top-1 -right-2 text-[8px] h-3.5 min-w-[14px] px-1 flex items-center justify-center rounded-full bg-[#00d992] text-black font-black font-mono">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+              <span className="text-[9px] font-mono leading-none tracking-tight">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </aside>
+
   );
 }
