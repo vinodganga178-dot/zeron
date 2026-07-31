@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import HeaderNavbar from '@/components/layout/HeaderNavbar';
 import { useZerone } from '@/context/AppContext';
 import { Key, Mail, User, Phone as PhoneIcon, ArrowRight, ShieldAlert, Sparkles, LogIn, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function AuthPage() {
+function AuthForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { loginVolunteer, loginAdmin, registerVolunteer } = useZerone();
@@ -283,5 +283,19 @@ export default function AuthPage() {
         </motion.div>
       </main>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#101010] text-[#00e5ff] font-mono flex items-center justify-center text-xs">
+          Loading authentication...
+        </div>
+      }
+    >
+      <AuthForm />
+    </Suspense>
   );
 }
