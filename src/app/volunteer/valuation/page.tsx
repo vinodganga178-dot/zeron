@@ -11,7 +11,7 @@ export default function VolunteerValuationRedirect() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-[#101010] flex items-center justify-center text-[#a8a8a8] font-mono text-xs">
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center text-[#94a3b8] font-mono text-xs">
       Redirecting to Evaluation Center...
     </div>
   );

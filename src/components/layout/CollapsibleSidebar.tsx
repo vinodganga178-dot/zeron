@@ -43,12 +43,12 @@ export default function CollapsibleSidebar({
 
   const isPurple = themeColor === 'purple';
 
-  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00d992]';
-  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00d992]';
-  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00d992]/40';
+  const accentBg = isPurple ? 'bg-[#7c3aed]' : 'bg-[#00e5ff]';
+  const accentText = isPurple ? 'text-[#a78bfa]' : 'text-[#00e5ff]';
+  const accentBorder = isPurple ? 'border-[#7c3aed]/40' : 'border-[#00e5ff]/40';
   const activeBtnBg = isPurple
     ? 'bg-[#7c3aed] text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]'
-    : 'bg-[#00d992] text-[#101010] shadow-[0_0_20px_rgba(0,217,146,0.35)]';
+    : 'bg-[#00e5ff] text-[#050505] shadow-[0_0_20px_rgba(0,229,255,0.35)] font-black';
 
   const handleTabClick = (tabId: string) => {
     onSelectTab(tabId);
@@ -58,14 +58,14 @@ export default function CollapsibleSidebar({
   return (
     <>
       {/* ── MOBILE TOP BAR (Fixed on Mobile Screens) ────────────────────────── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#1a1a1a]/95 backdrop-blur-xl border-b border-[#3d3a39] px-4 py-3 flex items-center justify-between font-mono shadow-lg">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[#08080c]/95 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex items-center justify-between font-mono shadow-lg">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsMobileOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#101010] border border-[#3d3a39] text-white active:scale-95 transition-all"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0c0c10] border border-white/10 text-white active:scale-95 transition-all"
             aria-label="Open Navigation Menu"
           >
-            <Menu className="h-5 w-5 text-[#00d992]" />
+            <Menu className="h-5 w-5 text-[#00e5ff]" />
           </button>
 
           <div className="flex items-center gap-2">
@@ -74,15 +74,15 @@ export default function CollapsibleSidebar({
             </div>
             <div>
               <div className="text-xs font-black text-white leading-none">
-                {title} <span className={`text-[8px] ${accentText} bg-[#101010] px-1 py-0.5 rounded border ${accentBorder}`}>{roleTag}</span>
+                {title} <span className={`text-[8px] ${accentText} bg-[#050505] px-1 py-0.5 rounded border ${accentBorder}`}>{roleTag}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Current Active Tab Indicator */}
-        <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#8b949e] bg-[#101010] px-2.5 py-1 rounded-lg border border-[#3d3a39]">
-          <span className={`w-1.5 h-1.5 rounded-full ${isPurple ? 'bg-[#7c3aed]' : 'bg-[#00d992]'} animate-pulse`} />
+        <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#94a3b8] bg-[#050505] px-2.5 py-1 rounded-lg border border-white/10">
+          <span className={`w-1.5 h-1.5 rounded-full ${isPurple ? 'bg-[#7c3aed]' : 'bg-[#00e5ff]'} blink`} />
           <span className="text-white font-bold uppercase truncate max-w-[90px]">{activeTab}</span>
         </div>
       </div>
@@ -109,24 +109,24 @@ export default function CollapsibleSidebar({
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-              className="fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-[#1a1a1a] border-r border-[#3d3a39] p-5 flex flex-col justify-between shadow-2xl font-mono md:hidden"
+              className="fixed top-0 left-0 bottom-0 z-50 w-72 sm:w-80 bg-[#08080c] border-r border-white/10 p-5 flex flex-col justify-between shadow-2xl font-mono md:hidden"
             >
               <div className="space-y-5">
                 {/* Drawer Header */}
-                <div className="flex items-center justify-between border-b border-[#3d3a39] pb-4">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4">
                   <div className="flex items-center gap-2.5">
                     <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${accentBg} ${isPurple ? 'text-white' : 'text-black'} font-black text-xs`}>
                       {isPurple ? <Shield className="h-5 w-5" /> : <Workflow className="h-5 w-5" />}
                     </div>
                     <div>
                       <div className="text-sm font-black text-white">{title}</div>
-                      <div className="text-[10px] text-[#8b949e]">{roleTag} Control Panel</div>
+                      <div className="text-[10px] text-[#94a3b8]">{roleTag} Control Panel</div>
                     </div>
                   </div>
 
                   <button
                     onClick={() => setIsMobileOpen(false)}
-                    className="h-8 w-8 flex items-center justify-center rounded-xl bg-[#101010] text-[#8b949e] hover:text-white border border-[#3d3a39]"
+                    className="h-8 w-8 flex items-center justify-center rounded-xl bg-[#0c0c10] text-[#94a3b8] hover:text-white border border-white/10"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -143,7 +143,7 @@ export default function CollapsibleSidebar({
                         key={item.id}
                         onClick={() => handleTabClick(item.id)}
                         className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-bold transition-all ${
-                          isActive ? activeBtnBg : 'text-[#8b949e] hover:text-white hover:bg-[#101010]'
+                          isActive ? activeBtnBg : 'text-[#94a3b8] hover:text-white hover:bg-white/5'
                         }`}
                       >
                         <span className="flex items-center gap-3">
@@ -152,7 +152,7 @@ export default function CollapsibleSidebar({
                         </span>
                         <div className="flex items-center gap-2">
                           {item.badge && (
-                            <span className={`text-[9px] px-2 py-0.5 rounded-md border font-mono ${item.badgeColor || 'bg-[#101010] text-[#8b949e] border-[#3d3a39]'}`}>
+                            <span className={`text-[9px] px-2 py-0.5 rounded-md border font-mono ${item.badgeColor || 'bg-[#050505] text-[#94a3b8] border-white/10'}`}>
                               {item.badge}
                             </span>
                           )}
@@ -165,14 +165,14 @@ export default function CollapsibleSidebar({
               </div>
 
               {/* User Profile & Logout Section */}
-              <div className="pt-4 border-t border-[#3d3a39] space-y-3">
-                <div className="flex items-center gap-3 bg-[#101010] p-2.5 rounded-xl border border-[#3d3a39]">
+              <div className="pt-4 border-t border-white/10 space-y-3">
+                <div className="flex items-center gap-3 bg-[#0c0c10] p-2.5 rounded-xl border border-white/10">
                   <div className={`h-8 w-8 rounded-lg ${accentBg} text-black font-black flex items-center justify-center text-xs shrink-0`}>
                     {userName.charAt(0)}
                   </div>
                   <div className="truncate">
                     <div className="font-bold text-white text-xs truncate">{userName}</div>
-                    <div className="text-[10px] text-[#8b949e] truncate">{userEmail}</div>
+                    <div className="text-[10px] text-[#94a3b8] truncate">{userEmail}</div>
                   </div>
                 </div>
 
@@ -181,7 +181,7 @@ export default function CollapsibleSidebar({
                     setIsMobileOpen(false);
                     onLogout();
                   }}
-                  className="w-full flex items-center justify-center gap-2 bg-[#101010] hover:bg-red-500/10 border border-[#3d3a39] hover:border-red-500/30 text-xs text-[#8b949e] hover:text-red-400 py-2.5 rounded-xl transition-all font-bold"
+                  className="w-full flex items-center justify-center gap-2 bg-[#0c0c10] hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 text-xs text-[#94a3b8] hover:text-red-400 py-2.5 rounded-xl transition-all font-bold"
                 >
                   <LogOut className="h-4 w-4" /> Logout Session
                 </button>
@@ -192,10 +192,10 @@ export default function CollapsibleSidebar({
       </AnimatePresence>
 
       {/* ── DESKTOP SIDEBAR (Permanent Left Panel on Medium+ Screens) ──────── */}
-      <aside className={`hidden md:flex flex-col justify-between shrink-0 bg-[#1a1a1a] border-r border-[#3d3a39] p-5 min-h-screen font-mono transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+      <aside className={`hidden md:flex flex-col justify-between shrink-0 bg-[#08080c] border-r border-white/10 p-5 min-h-screen font-mono transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
         <div className="space-y-6">
           {/* Brand Header */}
-          <div className="flex items-center justify-between border-b border-[#3d3a39] pb-4">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
             {!isCollapsed && (
               <div className="flex items-center gap-2.5">
                 <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${accentBg} ${isPurple ? 'text-white' : 'text-black'} font-black text-xs shadow-md`}>
@@ -203,9 +203,9 @@ export default function CollapsibleSidebar({
                 </div>
                 <div>
                   <div className="text-xs font-black text-white leading-none">
-                    {title} <span className={`text-[8px] ${accentText} bg-[#101010] px-1 py-0.5 rounded border ${accentBorder}`}>{roleTag}</span>
+                    {title} <span className={`text-[8px] ${accentText} bg-[#050505] px-1 py-0.5 rounded border ${accentBorder}`}>{roleTag}</span>
                   </div>
-                  <div className="text-[9px] text-[#8b949e] mt-1">Control Plane</div>
+                  <div className="text-[9px] text-[#94a3b8] mt-1">Control Plane</div>
                 </div>
               </div>
             )}
@@ -218,7 +218,7 @@ export default function CollapsibleSidebar({
 
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg bg-[#101010] border border-[#3d3a39] text-[#8b949e] hover:text-white transition-colors"
+              className="hidden lg:flex h-7 w-7 items-center justify-center rounded-lg bg-[#0c0c10] border border-white/10 text-[#94a3b8] hover:text-white transition-colors"
               title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -237,7 +237,7 @@ export default function CollapsibleSidebar({
                   onClick={() => onSelectTab(item.id)}
                   title={isCollapsed ? item.label : undefined}
                   className={`w-full flex items-center ${isCollapsed ? 'justify-center px-0' : 'justify-between px-3.5'} py-3 rounded-xl font-bold transition-all ${
-                    isActive ? activeBtnBg : 'text-[#8b949e] hover:text-white hover:bg-[#101010]'
+                    isActive ? activeBtnBg : 'text-[#94a3b8] hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <span className="flex items-center gap-3">
@@ -245,7 +245,7 @@ export default function CollapsibleSidebar({
                     {!isCollapsed && <span>{item.label}</span>}
                   </span>
                   {!isCollapsed && item.badge && (
-                    <span className={`text-[9px] px-2 py-0.5 rounded-md border font-mono ${item.badgeColor || 'bg-[#101010] text-[#8b949e] border-[#3d3a39]'}`}>
+                    <span className={`text-[9px] px-2 py-0.5 rounded-md border font-mono ${item.badgeColor || 'bg-[#050505] text-[#94a3b8] border-white/10'}`}>
                       {item.badge}
                     </span>
                   )}
@@ -256,22 +256,22 @@ export default function CollapsibleSidebar({
         </div>
 
         {/* User Profile & Logout */}
-        <div className="pt-4 border-t border-[#3d3a39] space-y-3">
+        <div className="pt-4 border-t border-white/10 space-y-3">
           {!isCollapsed ? (
             <>
-              <div className="flex items-center gap-3 bg-[#101010] p-2.5 rounded-xl border border-[#3d3a39]">
+              <div className="flex items-center gap-3 bg-[#0c0c10] p-2.5 rounded-xl border border-white/10">
                 <div className={`h-8 w-8 rounded-lg ${accentBg} text-black font-black flex items-center justify-center text-xs shrink-0`}>
                   {userName.charAt(0)}
                 </div>
                 <div className="truncate">
                   <div className="font-bold text-white text-xs truncate">{userName}</div>
-                  <div className="text-[10px] text-[#8b949e] truncate">{userEmail}</div>
+                  <div className="text-[10px] text-[#94a3b8] truncate">{userEmail}</div>
                 </div>
               </div>
 
               <button
                 onClick={onLogout}
-                className="w-full flex items-center justify-center gap-2 bg-[#101010] hover:bg-red-500/10 border border-[#3d3a39] hover:border-red-500/30 text-xs text-[#8b949e] hover:text-red-400 py-2.5 rounded-xl transition-all font-bold"
+                className="w-full flex items-center justify-center gap-2 bg-[#0c0c10] hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 text-xs text-[#94a3b8] hover:text-red-400 py-2.5 rounded-xl transition-all font-bold"
               >
                 <LogOut className="h-4 w-4" /> Logout Session
               </button>
@@ -280,7 +280,7 @@ export default function CollapsibleSidebar({
             <button
               onClick={onLogout}
               title="Logout"
-              className="w-full flex items-center justify-center h-10 rounded-xl bg-[#101010] border border-[#3d3a39] text-[#8b949e] hover:text-red-400"
+              className="w-full flex items-center justify-center h-10 rounded-xl bg-[#0c0c10] border border-white/10 text-[#94a3b8] hover:text-red-400"
             >
               <LogOut className="h-4 w-4" />
             </button>
@@ -289,7 +289,7 @@ export default function CollapsibleSidebar({
       </aside>
 
       {/* ── FLOATING MOBILE BOTTOM NAVIGATION BAR ──────────────────────────── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#1a1a1a]/95 backdrop-blur-xl border-t border-[#3d3a39] px-2 py-1.5 flex items-center justify-around font-mono shadow-2xl">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#08080c]/95 backdrop-blur-xl border-t border-white/10 px-2 py-1.5 flex items-center justify-around font-mono shadow-2xl">
         {menuItems.slice(0, 4).map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -302,8 +302,8 @@ export default function CollapsibleSidebar({
                 isActive
                   ? isPurple
                     ? 'text-[#a78bfa] bg-[#7c3aed]/15 font-bold'
-                    : 'text-[#00d992] bg-[#00d992]/15 font-bold'
-                  : 'text-[#8b949e] hover:text-white'
+                    : 'text-[#00e5ff] bg-[#00e5ff]/15 font-bold'
+                  : 'text-[#94a3b8] hover:text-white'
               }`}
             >
               <Icon className="h-4 w-4 mb-0.5" />

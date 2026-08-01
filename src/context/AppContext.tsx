@@ -231,11 +231,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          setVolunteers(parsed.volunteers || {});
-          setTeams(parsed.teams || {});
+          const defaultSeed = generateDefaultState();
+          const mergedVolunteers = { ...defaultSeed.volunteers, ...(parsed.volunteers || {}) };
+          setVolunteers(mergedVolunteers);
+          setTeams(parsed.teams || defaultSeed.teams);
           setEventControls(parsed.eventControls || DEFAULT_EVENT_CONTROLS);
           setNotifications(parsed.notifications || []);
-          setAuditLogs(parsed.auditLogs || []);
+          setAuditLogs(parsed.auditLogs || defaultSeed.auditLogs);
         } catch {
           const seed = generateDefaultState();
           setVolunteers(seed.volunteers);
@@ -336,17 +338,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     // Sandbox mode
     const snap = getState();
-    const vol = Object.values(snap.volunteers).find((v) => v.email.toLowerCase() === email.toLowerCase());
-    if (!vol) throw new Error('Volunteer not found');
+    let vol = Object.values(snap.volunteers).find((v) => v.email.toLowerCase() === email.toLowerCase());
+
+    // Fallback: If not found in current state, check default seeded accounts
+    if (!vol) {
+      const defaultSeed = generateDefaultState();
+      const seededVol = Object.values(defaultSeed.volunteers).find((v) => v.email.toLowerCase() === email.toLowerCase());
+      if (seededVol) {
+        vol = seededVol;
+        saveState({
+          ...snap,
+          volunteers: { ...snap.volunteers, [seededVol.uid]: seededVol },
+        });
+      }
+    }
+
+    if (!vol) throw new Error('Volunteer account not found. Please register an account first.');
     if (vol.password && vol.password !== password && password !== 'password') throw new Error('Incorrect password');
     if (vol.status !== 'approved') throw new Error('Your registration is pending admin approval. Please contact the administrator.');
 
+    const teamForVol = vol.assignedTeamId || Object.values(snap.teams).find((t) => t.volunteerId === vol.uid || t.volunteerName === vol.name)?.id || null;
     const auth: UserAuth = {
       uid: vol.uid,
       name: vol.name,
       email: vol.email,
       role: 'volunteer',
-      assignedTeamId: vol.assignedTeamId,
+      assignedTeamId: teamForVol,
       status: vol.status,
     };
     saveState({

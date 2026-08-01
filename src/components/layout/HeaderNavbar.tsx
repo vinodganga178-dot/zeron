@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useZerone } from '@/context/AppContext';
-import { Shield, Workflow, ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 
 export default function HeaderNavbar() {
   const pathname = usePathname();
@@ -37,34 +37,47 @@ export default function HeaderNavbar() {
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(1280px,calc(100%-2rem))] pointer-events-none">
-      <div className="pointer-events-auto bg-[#1a1a1a]/90 backdrop-blur-xl border border-[#3d3a39] rounded-2xl px-5 py-3 flex items-center justify-between gap-4 shadow-[0_8px_40px_rgba(2,6,19,0.9)]">
+      <div className="pointer-events-auto bg-[#08080c]/85 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-3 flex items-center justify-between gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-200">
         {/* Brand Logo with Chip SVG */}
-        <Link href="/" className="flex items-center gap-3 shrink-0 group focus-visible:outline-2 focus-visible:outline-[#00d992] rounded-lg">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1a1a1a] border border-[#3d3a39] group-hover:border-[#00d992] transition-colors">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d992" strokeWidth="1.5">
+        <Link
+          href="/"
+          className="flex items-center gap-3 shrink-0 group focus-visible:outline-2 focus-visible:outline-[#00e5ff] rounded-lg transition-transform active:scale-95"
+        >
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0c0c10] border border-white/10 group-hover:border-[#00e5ff] transition-colors shadow-inner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.5">
               <rect x="4" y="4" width="16" height="16" rx="3" />
-              <rect x="9" y="9" width="6" height="6" fill="#00d992" stroke="none" rx="1" />
+              <rect x="9" y="9" width="6" height="6" fill="#00e5ff" stroke="none" rx="1" />
               <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" strokeLinecap="round" />
             </svg>
           </div>
           <div>
-            <div className="text-[13px] font-black tracking-wider font-mono text-white leading-none group-hover:text-[#00d992] transition-colors">
-              ZERONE <span className="text-[#00d992]">7.0</span>
+            <div className="text-[13px] font-black tracking-wider font-mono text-white leading-none group-hover:text-[#00e5ff] transition-colors">
+              ZERONE <span className="text-[#00e5ff]">7.0</span>
             </div>
-            <div className="text-[8px] text-[#00d992] tracking-[0.15em] uppercase font-mono leading-none mt-1">
+            <div className="text-[8px] text-[#00e5ff] tracking-[0.15em] uppercase font-mono leading-none mt-1 opacity-90">
               CO-POWERED BY IEEE KIDANGOOR
             </div>
           </div>
         </Link>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6 text-[12px] font-mono font-bold text-[#8b949e]">
-          <Link href="/volunteer/login" className="hover:text-[#00d992] transition-colors flex items-center gap-1.5">
-            <span className="text-[10px] text-[#00d992] font-mono border border-[#00d992]/30 px-1.5 py-0.5 rounded bg-[#00d992]/10">01</span>
+        <nav className="hidden md:flex items-center gap-6 text-[12px] font-mono font-bold text-[#94a3b8]">
+          <Link
+            href="/volunteer/login"
+            className="hover:text-[#00e5ff] transition-colors flex items-center gap-1.5 group py-1"
+          >
+            <span className="text-[10px] text-[#00e5ff] font-mono border border-[#00e5ff]/30 px-1.5 py-0.5 rounded bg-[#00e5ff]/10 group-hover:bg-[#00e5ff] group-hover:text-[#050505] transition-colors">
+              01
+            </span>
             <span>Volunteer Portal</span>
           </Link>
-          <Link href="/admin/login" className="hover:text-[#7c3aed] transition-colors flex items-center gap-1.5">
-            <span className="text-[10px] text-[#7c3aed] font-mono border border-[#7c3aed]/30 px-1.5 py-0.5 rounded bg-[#7c3aed]/10">02</span>
+          <Link
+            href="/admin/login"
+            className="hover:text-[#7c3aed] transition-colors flex items-center gap-1.5 group py-1"
+          >
+            <span className="text-[10px] text-[#7c3aed] font-mono border border-[#7c3aed]/30 px-1.5 py-0.5 rounded bg-[#7c3aed]/10 group-hover:bg-[#7c3aed] group-hover:text-white transition-colors">
+              02
+            </span>
             <span>Admin Console</span>
           </Link>
         </nav>
@@ -72,16 +85,16 @@ export default function HeaderNavbar() {
         {/* Live Clock & Action Button */}
         <div className="flex items-center gap-2 sm:gap-3">
           {timeStr && (
-            <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono text-[#8b949e] bg-[#1a1a1a] border border-[#3d3a39] px-3 py-1.5 rounded-xl">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00d992] blink" />
-              <span>{timeStr}</span>
+            <div className="hidden lg:flex items-center gap-2 text-[11px] font-mono text-[#94a3b8] bg-[#0c0c10] border border-white/10 px-3 py-1.5 rounded-xl shadow-inner">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] blink" />
+              <span className="tabular-nums">{timeStr}</span>
             </div>
           )}
 
           {dashboardUrl ? (
             <button
               onClick={() => router.push(dashboardUrl)}
-              className="px-3.5 sm:px-4 py-2 rounded-xl text-[10px] sm:text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_20px_rgba(0,217,146,0.3)]"
+              className="btn-ink !py-2 !px-4 !text-[11px] font-mono font-black uppercase tracking-wider !rounded-xl !bg-[#00e5ff] !text-[#050505] hover:!bg-[#33ebff]"
             >
               Control Panel
             </button>
@@ -89,13 +102,13 @@ export default function HeaderNavbar() {
             <div className="hidden sm:flex items-center gap-2">
               <Link
                 href="/auth?mode=signin"
-                className="text-[12px] font-mono font-semibold text-[#8b949e] hover:text-white transition-colors px-3 py-1.5 rounded-xl hover:bg-[#1a1a1a]"
+                className="text-[12px] font-mono font-semibold text-[#94a3b8] hover:text-white transition-colors px-3 py-1.5 rounded-xl hover:bg-white/5"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth?mode=register"
-                className="px-4 py-2 rounded-xl text-[11px] font-mono font-black uppercase tracking-wider bg-[#00d992] text-[#101010] hover:bg-[#b8b3b0] transition-all shadow-[0_0_25px_rgba(0,217,146,0.35)] hover:scale-[1.02] flex items-center gap-1.5"
+                className="btn-ink !py-2 !px-4 !text-[11px] font-mono font-black uppercase tracking-wider !rounded-xl !bg-[#00e5ff] !text-[#050505] hover:!bg-[#33ebff] flex items-center gap-1.5"
               >
                 <span>Register</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -106,7 +119,7 @@ export default function HeaderNavbar() {
           {/* Mobile Menu Hamburger Toggle Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl bg-[#1a1a1a] border border-[#3d3a39] text-[#8b949e] hover:text-white transition-all"
+            className="md:hidden p-2 rounded-xl bg-[#0c0c10] border border-white/10 text-[#94a3b8] hover:text-white hover:border-[#00e5ff] transition-all"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -116,36 +129,36 @@ export default function HeaderNavbar() {
 
       {/* Mobile Drawer Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 pointer-events-auto bg-[#1a1a1a]/95 backdrop-blur-2xl border border-[#3d3a39] rounded-2xl p-4 space-y-3 font-mono text-xs shadow-2xl animate-in slide-in-from-top-2">
+        <div className="md:hidden mt-2 pointer-events-auto bg-[#08080c]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 space-y-3 font-mono text-xs shadow-2xl animate-in slide-in-from-top-2">
           <Link
             href="/volunteer/login"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="flex items-center justify-between p-3 rounded-xl bg-[#101010] border border-[#3d3a39] text-white font-bold"
+            className="flex items-center justify-between p-3 rounded-xl bg-[#050505] border border-white/10 text-white font-bold hover:border-[#00e5ff] transition-colors"
           >
             <span>01 · Volunteer Portal</span>
-            <ArrowRight className="h-4 w-4 text-[#00d992]" />
+            <ArrowRight className="h-4 w-4 text-[#00e5ff]" />
           </Link>
           <Link
             href="/admin/login"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="flex items-center justify-between p-3 rounded-xl bg-[#101010] border border-[#3d3a39] text-white font-bold"
+            className="flex items-center justify-between p-3 rounded-xl bg-[#050505] border border-white/10 text-white font-bold hover:border-[#7c3aed] transition-colors"
           >
             <span>02 · Admin Console</span>
             <ArrowRight className="h-4 w-4 text-[#7c3aed]" />
           </Link>
           {!dashboardUrl && (
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#3d3a39]">
+            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
               <Link
                 href="/auth?mode=signin"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-center py-2.5 rounded-xl border border-[#3d3a39] text-white font-bold"
+                className="text-center py-2.5 rounded-xl border border-white/10 text-white font-bold hover:bg-white/5 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth?mode=register"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-center py-2.5 rounded-xl bg-[#00d992] text-black font-bold"
+                className="text-center py-2.5 rounded-xl bg-[#00e5ff] text-[#050505] font-bold hover:bg-[#33ebff] transition-colors"
               >
                 Register
               </Link>
